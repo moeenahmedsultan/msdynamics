@@ -1,0 +1,125 @@
+class Moeen_SalesOrder
+{
+    /// <summary>
+    /// Author: Moeen Ahmed Sultan
+    /// D365FO & AX2012 Customization Consultant
+    /// Email: moeenahmedsultan@hotmail.com
+    /// Tel: +923214589595
+    /// Written on: 22nd Nov, 2018
+    /// </summary>
+
+    public static void main(Args _args)
+    {        
+        SalesTable salesTable;
+        SalesLine salesLine;
+        InventTable inventTable;
+        InventDim inventDim;
+        CustTable custTable;
+        CustAccount custAccount;
+        NumberSeq numberSeq;
+        SalesId salesID;
+        str warehouse;
+        try
+        {
+            ttsbegin;
+            salesTable.clear();
+
+            //Number sequence automatically gets the next number as per system's configuration
+            //You can create your own unique number for sales id. But it should not be duplicated.
+            //NumberSequence of the system manages numbers for us.
+            //SalesId is mandatory to create sales order
+            numberSeq = NumberSeq::newGetNum(SalesParameters::numRefSalesId());
+            numberSeq.used();
+            salesTable.SalesId = numberSeq.num();
+            salesID = salesTable.SalesId;
+
+            //To give your own sales id.
+            //salesTable.SalesId = strFmt("%1", "S0001");
+
+            salesTable.initValue();
+            
+            //Set the warehouse as per your scenario
+            //It will be used to set the Site & Warehouse and create inventory dimension id
+            warehouse = "11";
+
+            //Give CustAccount as per your scenario
+            //It is mandatory to create sales order
+            custAccount = "US-001";
+            if(CustTable::find(custAccount))
+            {
+                salesTable.CustAccount = custAccount;
+            }
+            else
+            {
+                info(strFmt("Customer account %1 doesn't exist.", custAccount));
+            }
+
+            //Initializing the sales order from customer
+            salesTable.initFromCustTable();
+            if(InventLocation::find(warehouse).InventLocationId != "")
+            {
+                salesTable.InventSiteId = InventLocation::find(warehouse).InventSiteId;
+                salesTable.InventLocationId = inventlocation::find(warehouse).InventLocationId;
+            }
+            salesTable.insert();
+            try
+            {
+                inventTable.clear();
+                inventDim.clear();
+                salesLine.clear();
+
+                //Give ItemId as per your scenario
+                //It is mandatory to create sales line
+                select * from inventTable
+                    where inventTable.itemId == "A0001";
+                    
+                salesLine.clear();
+                salesLine.SalesId = salesID;
+                salesLine.ItemId = inventTable.ItemId;
+                salesLine.itemIdChanged();
+
+                //Initializing the sales line from inventory
+                salesLine.initFromInventTable(InventTable::find(salesLine.ItemId));
+
+                //Setting and creating inventory dimensions
+                //I have given the warehouse in 
+                if(Inventlocation::find(warehouse).InventLocationId != "")
+                {
+                    inventdim.InventSiteId = InventLocation::find(warehouse).InventSiteId;
+                    inventdim.InventLocationId = Inventlocation::find(warehouse).InventLocationId;
+                }
+                salesLine.InventDimId = InventdIm::findOrCreate(inventDim).inventDimId;
+
+                salesLine.createLine(NoYes::Yes, // Validate
+                NoYes::Yes, // initFromSalesTable
+                NoYes::No, // initFromInventTable
+                NoYes::Yes, // calcInventQty
+                NoYes::Yes, // searchMarkup
+                NoYes::Yes); //
+
+                //Set the values as per your scenario
+                salesLine.SalesPrice = 250;
+                salesLine.SalesQty = 3;
+                salesLine.LineDisc = 10;
+                salesLine.LineAmount= salesLine.calcLineAmount();
+                salesLine.update();
+                ttscommit;
+            }
+            catch(Exception::Error)
+            {
+                ttsabort;
+            }
+
+            //Invoicing the sales order
+            SalesFormLetter formLetterObj;
+            formLetterObj = SalesFormLetter::construct(DocumentStatus::Invoice);
+            formLetterObj.update(SalesTable::find(salesID));
+            
+            info(strFmt("Sales order created with Sales ID: %1",salesID));
+        }
+        catch(Exception::Error)
+        {
+            ttsabort;
+        }
+    }
+}
