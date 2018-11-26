@@ -1,0 +1,10 @@
+public InventQtyAvailPhysical onHandInventory(ItemId _itemId, InventDimId _inventDimId)
+{
+    InventOnhand    inventOnhand;
+    InventDim       inventDim = inventDim::find(_inventDimId);
+    InventDimParm   inventDimParm;
+ 
+    inventDimParm.initFromInventDim(inventDim);
+    inventOnhand = InventOnhand::newParameters(_itemId, inventDim, inventDimParm);
+    return inventOnhand.availPhysical();
+}
