@@ -1,0 +1,70 @@
+  /*
+  Moeen Ahmed Sultan
+  Email: moeenahmedsultan@hotmail.com
+  Tel: +92 321 458 9595
+  */
+  
+  //Copy this code in a job
+  //Execute it to get idea
+  //Use it
+  Dialog                      dialog;
+
+  FormRadioControl            formRadioControl;
+  FormCheckBoxControl         formCheckBoxControl;
+
+  FormBuildCheckBoxControl    formBuildCheckBoxControl;
+  FormBuildRadioControl       formBuildRadioControl;
+
+  FormBuildGroupControl       formBuildGroupControl;
+
+  int                         formBuildRadioControlId;
+  int                         formBuildCheckBoxControlId;
+  int radioButtonValue, checkBoxButtonValue;
+  ;
+  //Build dialog with radio buttons
+  dialog = new Dialog("Update default dimensions in lines");
+
+  formBuildGroupControl = dialog.mainFormGroup();
+
+  formBuildRadioControl = formBuildGroupControl.addControl(FormControlType::RadioButton,'radioButtons');    
+  formBuildCheckBoxControl = formBuildGroupControl.addControl(FormControlType::CheckBox,'checkBox');
+
+
+  formBuildCheckBoxControlId = FormBuildCheckBoxControl.id();
+  formBuildRadioControlId = formBuildRadioControl.id();
+
+
+  //set number of buttons
+  formBuildRadioControl.items(2);
+  //add descriptions
+  formBuildRadioControl.item(1);
+  formBuildRadioControl.text("Update default dimensions");
+  formBuildRadioControl.item(2);
+  formBuildRadioControl.text("Don't update");
+  formBuildRadioControl.selection(1); //set default radio button. array index starts from 0.
+
+  formBuildCheckBoxControl.label("Save setup");
+
+  dialog.alwaysOnTop(true);
+
+  if(dialog.run())
+  {
+      if(formBuildRadioControl)
+      {
+          //get control
+          formRadioControl = dialog.formRun().control(formBuildRadioControlId);
+
+          //get index
+          radioButtonValue = formRadioControl.selection()+1;
+          info(strfmt("Radiobutton: %1",formRadioControl.selection()+1));
+
+      }
+      if(formBuildCheckBoxControl)
+      {            
+          //get control
+          FormCheckBoxControl = dialog.formRun().control(formBuildCheckBoxControlId);
+          //get index
+          checkBoxButtonValue = formCheckBoxControl.value();
+          info(strFmt("Checkbox: %1", formCheckBoxControl.value()));
+      }
+  }
