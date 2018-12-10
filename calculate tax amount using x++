@@ -1,1 +1,8 @@
+//Author: Moeen Ahmed Sultan
+//Tel:    +92 321 458 9595
+//Email:  moeenahmedsultan@hotmail.com
+//Blog:   msdynamics.nevoitech.com
+
+//You have to pass these values to the functions whether it comes from PurchLine or SalesLine or any other table.
+//Store the result in variable
 Tax::calcTaxAmount(purchLine.TaxGroup, purchLine.TaxItemGroup, Systemdateget(), purchLine.CurrencyCode, purchLine.LineAmount, TaxModuleType::Purch);
