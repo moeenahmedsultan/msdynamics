@@ -1,0 +1,1 @@
+Tax::calcTaxAmount(purchLine.TaxGroup, purchLine.TaxItemGroup, Systemdateget(), purchLine.CurrencyCode, purchLine.LineAmount, TaxModuleType::Purch);
