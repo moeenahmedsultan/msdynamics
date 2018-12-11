@@ -1,0 +1,22 @@
+//Author: Moeen Ahmed Sultan
+//Tel: +92 321 458 9595
+//Email: moeenahmedsultan@hotmail.com
+
+
+//function which returns the value of given dimension name e.g. BusinessUnit
+
+public str getDimensionDisplayValue(RecId defaultDimension, Name dimName)
+{
+  DimensionAttributeValueSetStorage dimStorage;
+
+  dimStorage = DimensionAttributeValueSetStorage::find(defaultDimension);
+  return dimStorage.getDisplayValueByDimensionAttribute(DimensionAttribute::findByName(dimName).RecId);
+}
+
+//DefaultDimension is retrived from PurchTable just to give you an example. You can pass any DefaultDimension value
+//'Project' is the name of the financial dimension. You can use 'BusinessUnit', 'Worker' or 'CostCenter' etc.
+//call the function follows:
+
+str dimensionValue;
+dimensionValue = this.getDimensionDisplayValue(purchTable.DefaultDimension, 'Project')
+
