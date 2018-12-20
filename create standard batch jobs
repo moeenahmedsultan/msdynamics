@@ -1,0 +1,19 @@
+//Author:   Moeen Ahmed Sultan
+//Email:    moeenahmedsultan@hotmail.com
+//Tel:      +92 321 458 9595
+
+//Go to SysSecurityDynamicRoleAssignment class
+//Go to createBatchJob function
+//Find out the below code
+//select firstonly BatchJobId from batch where batch.ClassNumber == classNum(SysSecurityDynamicRoleAssignment) &&
+//      batch.CreatedBy == curUserId() && batch.DataPartition == getcurrentpartition();
+//Comment the condition after &&
+//Run the CreateStandardBatchJobs job
+//Revert/uncomment the commented code
+
+static void CreateStandardBatchJobs(Args _args)
+{
+    SysSecurityDynamicRoleAssignment::createBatchJob();
+    SysUserLicenseMiner::createBatchJob();
+    info("Standard batch jobs created successfully.");
+}
