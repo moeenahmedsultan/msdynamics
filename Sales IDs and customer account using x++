@@ -1,0 +1,33 @@
+//Author: Moeen Ahmed Sultan
+//Email: moeenahmedsultan@hotmail.com
+//Tel: +92 321 458 9595
+//Microsoft Dynamics 365 Finance & Operations
+
+//It prints the Sales IDs which are associated with the Customer account "US-003"
+//For clarity, I have separately retrieve the data of customer and sales order, otherwise it can be done in one line only
+//I have used "US-003" which is in USMF company of D365FO
+//You can use any other customer which are associated with one or more sales orders
+
+class CustomerSaleOrderJob
+{        
+    /// <summary>
+    /// Runs the class with the specified arguments.
+    /// </summary>
+    /// <param name = "_args">The specified arguments.</param>
+    public static void main(Args _args)
+    {  
+        CustTable custTable;
+        SalesTable salesTable;
+        
+        //"US-003" is customer account. Change this if you want to get sales order of any other customer
+        select * from custTable
+            where CustTable.AccountNum == 'US-003';   
+        
+        //Loop the salesTable so that all sales orders which have customer account "US-003, will be selected
+        while select * from salesTable
+            where salesTable.CustAccount == CustTable.AccountNum
+        {
+            info(strFmt("Sales ID: %1 - Cust Account: %2 - Cust Account from Sales Table: %3", SalesTable.SalesId, CustTable.AccountNum, salesTable.CustAccount));
+        }
+    }
+}
