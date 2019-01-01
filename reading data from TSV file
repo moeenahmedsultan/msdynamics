@@ -1,1 +1,50 @@
-
+class ReadDataFromTSVFileJob
+{        
+    /// <summary>
+    /// Runs the class with the specified arguments.
+    /// </summary>
+    /// <param name = "_args">The specified arguments.</param>
+    public static void main(Args _args)
+    {
+        TextIo file;
+        FileName filename;
+        container cont;
+        FileIoPermission permission;
+        boolean headerRow;
+        #File
+        
+        try
+        {
+            //File name along with complete path
+            filename = @"C:\TSVDataFile.txt";
+            permission = new FileIoPermission(filename, #io_read);
+            permission.assert();
+            file = new TextIo(filename, #io_read);
+            if (!file)
+            throw Exception::Error;
+            file.inRecordDelimiter(#delimiterCRLF);
+            //inFieldDelimiter function splits the data where TAB is found because \t is passed as parameter and \t means tab.
+            file.inFieldDelimiter("\t");           
+            cont = file.read();
+            //if headerRow is true, then it will not print the first line which is usually consists of Headings.
+            headerRow = true;
+            while (file.status() == IO_Status::Ok)
+            {
+                if(headerRow)
+                {
+                    headerRow=false;
+                }
+                else
+                {
+                    info(strfmt("%1 %2 %3 %4 %5 %6 %7 %8 %9",conpeek(cont,1),conpeek(cont,2),conpeek(cont,3),conpeek(cont,4),conpeek(cont,5),conpeek(cont,6),conpeek(cont,7),conpeek(cont,8),conpeek(cont,9)));
+                }
+                cont = file.read();
+            }
+        }
+        catch(Exception::Error)
+        {
+            error("ERROR");
+        }
+        CodeAccessPermission::revertAssert();
+    }
+}
