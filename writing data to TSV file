@@ -1,0 +1,34 @@
+class WriteDataToTSVFileJob
+{        
+    public static void main(Args _args)
+    {  
+        TextIo           file;
+        str              fileName;
+        FileIOPermission IOPermission;
+        container        cont;
+        #File
+        ;
+        try
+        {
+            fileName = "C:\\TSVDataFile.txt";
+            IOPermission = new FileIOPermission(fileName, #IO_APPEND);//If you want to write after deleting previous data, use #IO_WRITE instead of #IO_APPEND
+            IOPermission.assert();
+            file = new TextIo(filename, #IO_APPEND);//If you want to write after deleting previous data, use #IO_WRITE instead of #IO_APPEND
+            file.outRecordDelimiter(#delimiterCRLF);
+            file.outFieldDelimiter("\t");
+        
+            //It will create one tab separated row/line in the text file.
+            cont = connull();
+            cont = conins(cont, 1, "Moeen");
+            cont = conins(cont, 2, "Ahmed");
+            cont = conins(cont, 3, "Sultan");               
+            file.writeExp(cont);
+            
+        }
+        catch(Exception::Error)
+        {
+            error("ERROR");
+        }
+        CodeAccessPermission::revertAssert();
+    }
+}
