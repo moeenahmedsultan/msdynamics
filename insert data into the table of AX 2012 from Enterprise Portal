@@ -1,0 +1,21 @@
+try
+{
+    IAxaptaAdapter ax;
+    IAxaptaRecordAdapter axRecord;
+    
+    using (axRecord = AxSession.AxaptaAdapter.CreateAxaptaRecord("TableName")) //Add the name of the Table of AX in which you want to insert data
+    {
+        axRecord.SetField("FieldName", DATA); //Pass the field name of table and data you want to insert into the table.
+        axRecord.Insert();
+    }
+}
+catch (Exception ex)
+{
+    AxExceptionCategory exceptionCategory;
+    // This returns true if the exception can be handled here
+    if (!AxControlExceptionHandler.TryHandleException(this, ex, out exceptionCategory))
+    {
+        // The exception is system fatal - in this case we re-throw.                                    
+        throw;
+    }
+}
