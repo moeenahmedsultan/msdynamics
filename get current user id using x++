@@ -3,7 +3,7 @@
 //Name: Moeen Ahmed Sultan
 //Tel/WhatsApp: +92 321 458 9595
 //Email: moeenahmedsultan@hotmail.com
-
+//Blog: msdynamics.nevoitech.com
 class GetCurrentUserIdJob
 {
     public static void main(Args _args)
