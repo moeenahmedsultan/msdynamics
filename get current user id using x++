@@ -1,0 +1,13 @@
+//The code can be used in Microsoft Dynamics AX 2012 & Microsoft Dynamics 365 for Finance and Operations
+//For any confusion or better solution, you may contact me at following:
+//Name: Moeen Ahmed Sultan
+//Tel/WhatsApp: +92 321 458 9595
+//Email: moeenahmedsultan@hotmail.com
+
+class GetCurrentUserIdJob
+{
+    public static void main(Args _args)
+    {       
+        info(strFmt("Current User Id: %1", curUserId()));
+    }
+}
