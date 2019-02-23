@@ -1,0 +1,31 @@
+//The code can be used in Microsoft Dynamics AX 2012 & Microsoft Dynamics 365 for Finance and Operations
+//For any confusion or better solution, you may contact me at following:
+//Name: Moeen Ahmed Sultan
+//Tel/WhatsApp: +92 321 458 9595
+//Email: moeenahmedsultan@hotmail.com
+//Blog: msdynamics.nevoitech.com
+
+class GetCurrentUserNameJob
+{
+    public static void main(Args _args)
+    {
+        HcmWorker hcmWorker;
+        DirPersonUser dirPersonUser;
+        DirPerson dirPerson;
+        DirPartyTable dirPartyTable;
+
+        select * from hcmWorker
+            where hcmWorker.RecId == hcmWorker::userId2Worker(curUserId());
+        
+        select * from dirPerson
+            where dirPerson.RecId == hcmWorker.Person;
+        
+        select * from dirPartyTable
+            where dirPartyTable.RecId == dirPerson.RecId;
+
+        
+        info(strFmt("Current User Id: %1", curUserId()));
+        info(strFmt("Personnel Number: %1", hcmWorker.PersonnelNumber));
+        info(strFmt("Name: %1", DirPartyTable.Name));
+    }
+}
