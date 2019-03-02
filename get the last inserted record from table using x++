@@ -6,7 +6,7 @@
 //Blog: msdynamics.nevoitech.com
 
 
-//This is just as example shown using the PurchTable. You should use the table according to your requirements. 
+//This is just an example shown using the PurchTable. You should use the table according to your requirements. 
 PurchTable purchTable;
 select * from purchTable
 order by RecId desc;
