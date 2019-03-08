@@ -1,1 +1,72 @@
+//Moeen Ahmed Sultan
+//NevoiTech Blog
+//Tel: +92 321 458 9595
+//WhatsApp: +92 321 458 9595
+//Email: moeenahmedsultan@gmail.com
 
+
+//In this file, there are two classes and two clicked() methods code. Please see the video or article to understand
+//In this class, the methods are overriden
+
+class Moeen_LookupFormMethodOverrides
+{    
+    protected void new()
+    {
+    }
+
+    public static Moeen_LookupFormMethodOverrides construct()
+    {
+        //Returns the object of Moeen_LookupFormMethodOverrides class
+        return new Moeen_LookupFormMethodOverrides();
+    }
+
+    public void PersonnelNumber_OnLookup(FormStringControl _callingControl)
+    {
+        //Creating lookup here
+        //Lookup will show the PersonnelNumber from HcmWorker table.
+        SysTableLookup sysTableLookup = SysTableLookup::newParameters(tableNum(HcmWorker), _callingControl);
+        sysTableLookup.addLookupfield(fieldNum(HcmWorker, PersonnelNumber));
+        sysTableLookup.performFormLookup();
+    }
+
+}
+
+
+//In this class, event is handled and registration of method is done.
+//Event handler class
+
+class Moeen_LookupFormEventHandler
+{
+    //Go to the form -> data source -> YOUR DATA SOURCE -> Events -> OnInitialized
+    //Right click the OnInitialized and Copy the event handler
+    //Paste it Here
+    [FormDataSourceEventHandler(formDataSourceStr(Moeen_LookupForm, Moeen_LookupTable), FormDataSourceEventType::Initialized)]
+    public static void Moeen_LookupTable_OnInitialized(FormDataSource sender, FormDataSourceEventArgs e)
+    {
+        //Call the construct method of Moeen_LookupFormMethodOverrides class and get the object of it.
+        //Stores the object in overrides variable
+        var overrides = Moeen_LookupFormMethodOverrides::construct();
+ 
+        //Registering to the methods in Moeen_LookupFormMethodOverrides
+        //Passing the customized Moeen_LookupTable table and it's PersonnelNumber
+        sender.object(fieldNum(Moeen_LookupTable, PersonnelNumber)).registerOverrideMethod(methodStr(FormDataObject, lookup),
+            methodStr(Moeen_LookupFormMethodOverrides, PersonnelNumber_OnLookup), overrides);
+
+    }
+
+}
+
+
+//Clicked methods logic
+
+//Clicked method of OK Button
+    //super();
+    info(strFmt("%1", Moeen_LookupTable_PersonnelNumber.valueStr()));
+    Moeen_LookupTable lookupTable;
+    lookupTable.PersonnelNumber = Moeen_LookupTable_PersonnelNumber.valueStr();
+    lookupTable.insert();
+    element.close();
+
+//Clicked method of Cancel Button
+    //super();
+    element.close();
