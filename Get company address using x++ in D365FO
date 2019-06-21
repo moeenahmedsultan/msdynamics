@@ -1,0 +1,2 @@
+CompanyInfo companyInfo = CompanyInfo::find();
+info(strFmt("%1",companyInfo.postalAddress().Address));
