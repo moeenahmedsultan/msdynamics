@@ -6,7 +6,7 @@ ledgerJournalTable.clear();
 ledgerJournalTrans.clear();
                 
 select ledgerJournalTrans
-     where ledgerJournalTrans.Voucher == "VOUCHER NUMBER"
+     where ledgerJournalTrans.Voucher == "VOUCHER NUMBER"; //Add voucher number in the double quotes against which you want to get total debit and credit.
 ledgerJournalEngine = new ledgerJournalEngine();
 ledgerJournalTable = ledgerJournalTable::find(ledgerJournalTrans.JournalNum);
 ledgerJournalEngine.newJournalActive(ledgerJournalTable,true);
