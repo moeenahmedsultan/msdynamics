@@ -1,3 +1,7 @@
+//Author:   Moeen Ahmed Sultan
+//Email:    moeenahmedsultan@gmail.com
+//Tel:      +92 321 458 9595
+
 LedgerJournalEngine ledgerJournalEngine;
 LedgerJournalTrans ledgerJournalTrans;
 LedgerJournalTable  ledgerJournalTable;
