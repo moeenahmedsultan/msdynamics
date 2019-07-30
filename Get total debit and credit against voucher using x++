@@ -1,0 +1,13 @@
+LedgerJournalEngine ledgerJournalEngine;
+LedgerJournalTrans ledgerJournalTrans;
+LedgerJournalTable  ledgerJournalTable;
+
+ledgerJournalTable.clear();
+ledgerJournalTrans.clear();
+                
+select ledgerJournalTrans
+     where ledgerJournalTrans.Voucher == "VOUCHER NUMBER"
+ledgerJournalEngine = new ledgerJournalEngine();
+ledgerJournalTable = ledgerJournalTable::find(ledgerJournalTrans.JournalNum);
+ledgerJournalEngine.newJournalActive(ledgerJournalTable,true);
+info(strFmt("%1 - %2", ledgerJournalEngine.voucherDebit(ledgerJournalTrans), ledgerJournalEngine.voucherCredit(ledgerJournalTrans)));
