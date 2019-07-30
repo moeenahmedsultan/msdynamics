@@ -1,0 +1,17 @@
+//Author:   Moeen Ahmed Sultan
+//Email:    moeenahmedsultan@gmail.com
+//Tel:      +92 321 458 9595
+
+LedgerJournalEngine ledgerJournalEngine;
+LedgerJournalTrans ledgerJournalTrans;
+LedgerJournalTable  ledgerJournalTable;
+
+ledgerJournalTable.clear();
+ledgerJournalTrans.clear();
+                
+select ledgerJournalTrans
+     where ledgerJournalTrans.Voucher == "VOUCHER NUMBER"; //Add voucher number in the double quotes against which you want to get total debit and credit.
+ledgerJournalEngine = new ledgerJournalEngine();
+ledgerJournalTable = ledgerJournalTable::find(ledgerJournalTrans.JournalNum);
+ledgerJournalEngine.newJournalActive(ledgerJournalTable,true);
+info(strFmt("%1 - %2", ledgerJournalEngine.voucherDebit(ledgerJournalTrans), ledgerJournalEngine.voucherCredit(ledgerJournalTrans)));
