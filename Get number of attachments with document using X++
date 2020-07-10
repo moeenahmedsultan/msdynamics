@@ -1,0 +1,23 @@
+//Moeen Ahmed Sultan
+//WhatsApp: +92 321 458 9595
+
+//Code is used to get the number of attachments with the document. In this //code, we are checking that how many attachments are with the Journal.
+//If you want to check it with any other document, you need to replace the //LedgerJournalTable with the document's table.
+
+DocuRef docuRef; 
+DocuValue docuValue;
+        
+LedgerJournalTable ledgerJournalTable;
+   
+//You can use other tables as per your requirements
+select * from ledgerJournalTable
+     where LedgerJournalTable.JournalNum == 'USMF-000000003';
+
+//Replace <LedgerJournalTable> with your <table name>
+//Counting total attachments with the current record/document
+select count(RecId) from docuRef
+     where docuRef.RefRecId == ledgerJournalTable.RecId 
+     && docuRef.RefTableId == tableNum(LedgerJournalTable)
+     && docuRef.RefCompanyId == curExt();
+
+info(strFmt("%1", docuRef.RecId));
