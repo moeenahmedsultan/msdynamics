@@ -1,0 +1,55 @@
+//Moeen Ahmed Sultan
+//WhatsApp: +92 321 458 9595
+class CreateMovementJournal
+{
+    public static void main(Args _args)
+    {
+        InventJournalTable                  inventJournalTable;
+        InventJournalTrans                  inventJournalTrans;
+        InventJournalNameId                 inventJournalNameId;
+        InventJournalName                   inventJournalName;
+        InventDim                           inventDim;     
+        DimensionAttributeValueCombination  dimAttrValueCombo;
+        int                                 numOfLines = 0;
+
+        ttsbegin;
+        //Below code creates journal header
+        inventJournalTable.clear();
+        inventJournalNameId =  InventJournalName::standardJournalName(InventJournalType::Movement);
+        inventJournalTable.initFromInventJournalName(InventJournalName::find(inventJournalNameId));
+        inventJournalTable.insert();
+
+        //Below code creates a single line
+        inventJournalTrans.clear();
+        inventJournalTrans.initFromInventJournalTable(inventJournalTable);
+        inventJournalTrans.TransDate = systemDateGet();
+        inventJournalTrans.ItemId = '1000'; //Replace the ItemId according to your data
+        inventJournalTrans.initFromInventTable(InventTable::find(inventJournalTrans.ItemId));
+        inventJournalTrans.Qty = 1; //Replace the Qty according to your data
+        inventdim.InventSiteId = '1'; //Replace the InventSiteId (Site) according to your data
+        inventdim.InventLocationId = '11'; //Replace the InventLocationId (Warehouse) according to your data
+        inventJournalTrans.InventDimId = InventdIm::findOrCreate(inventDim).inventDimId;
+
+        dimAttrValueCombo.clear();
+        select firstonly RecId from  dimAttrValueCombo
+            where dimAttrValueCombo.MainAccount == MainAccount::findByMainAccountId("110110").RecId //Replace the MainAccountId according to your data
+            && dimAttrValueCombo.DisplayValue == '110110';  //Replace the MainAccountId according to your data
+          
+        inventJournalTrans.LedgerDimension = dimAttrValueCombo.RecId;
+
+        //Insert line to movement journal if quantity is non-zero
+        if(inventJournalTrans.Qty > 0)
+        {
+            numOfLines++;
+            inventJournalTrans.insert();
+        }
+
+        //updating number of lines field at header level of Movement Journal
+        inventJournalTable.NumOfLines = numOfLines;
+        inventJournalTable.update();
+        ttscommit;
+
+        info(strFmt("Movement Journal ID: %1", inventJournalTable.JournalId));
+    }
+
+}
